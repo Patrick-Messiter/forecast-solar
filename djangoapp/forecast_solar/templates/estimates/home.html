@@ -1,5 +1,35 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <h1>Home</h1>
+<main>
+    <h1>Forecast Solar Form</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Find out your estimation">
+    </form>
+
+    {% if solar_data %}
+        <h2>Results - {{place}}</h2>
+        <p>Estimation dated at: {{utc_estimate_timestamp}}</p>
+        <div>
+            <h3>Total Day Estimates:</h3>
+            <ul>
+                {% for day, value in watt_days.items %}
+                    <li>{{day}}: {{value}} watts</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            <h3>Estimates Hourly Break Down</h3>
+            <ul>
+                {% for time, value in watt_hours.items %}
+                    <li>{{time}}: {{value}} watts</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</main>
 {% endblock %}
