@@ -31,9 +31,9 @@
 
             <div>
                 <h3>Estimates Hourly Break Down</h3>
-                <ul>
+                <ul class="d-flex flex-wrap">
                     {% for time, value in watt_hours.items %}
-                        <li>{{time}}: {{value}} watts</li>
+                        <li class="col-sm-4 pe-3">{{time}}: {{value}} watts</li>
                     {% endfor %}
                 </ul>
             </div>
