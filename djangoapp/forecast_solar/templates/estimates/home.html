@@ -1,35 +1,44 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<main>
-    <h1>Forecast Solar Form</h1>
-
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="Find out your estimation">
-    </form>
-
-    {% if solar_data %}
-        <h2>Results - {{place}}</h2>
-        <p>Estimation dated at: {{utc_estimate_timestamp}}</p>
-        <div>
-            <h3>Total Day Estimates:</h3>
-            <ul>
-                {% for day, value in watt_days.items %}
-                    <li>{{day}}: {{value}} watts</li>
-                {% endfor %}
-            </ul>
+<main class="d-flex justify-content-center">
+    <div class="col-sm-10 py-5">
+        <div class="d-flex justify-content-center">
+            <h1>Forecast Solar Form</h1>
         </div>
+        <form method="POST" class="d-flex row justify-content-center">
+            {% csrf_token %}
+            <div class="col-sm-8">
+                {{form.as_p}}
+            </div>
+            <div class="d-flex justify-content-center py-3">
+                <input class="btn btn-primary" type="submit" value="Find out your estimation">
+            </div>
+        </form>
 
-        <div>
-            <h3>Estimates Hourly Break Down</h3>
-            <ul>
-                {% for time, value in watt_hours.items %}
-                    <li>{{time}}: {{value}} watts</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
+
+        {% if solar_data %}
+            <h2>Results - {{place}}</h2>
+            <p>Estimation dated at: {{utc_estimate_timestamp}}</p>
+            <div>
+                <h3>Total Day Estimates:</h3>
+                <ul>
+                    {% for day, value in watt_days.items %}
+                        <li>{{day}}: {{value}} watts</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div>
+                <h3>Estimates Hourly Break Down</h3>
+                <ul>
+                    {% for time, value in watt_hours.items %}
+                        <li>{{time}}: {{value}} watts</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+
 </main>
 {% endblock %}
