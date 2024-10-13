@@ -25,7 +25,14 @@ class HomeView(FormView):
             context['place'] = solar_data['message']['info']['place']
             estimate_timestamp = datetime.fromisoformat(solar_data['message']['info']['time_utc'])
             context['utc_estimate_timestamp'] = estimate_timestamp.strftime('%I:%M%p %d %B %Y')
-            context['watt_days'] = solar_data['result']['watt_hours_day']
+
+            watt_days = solar_data['result']['watt_hours_day']
+            watt_days_amended = {}
+            for timestamp in watt_days.keys():
+                date = datetime.strptime(timestamp, '%Y-%m-%d')
+                new_key = date.strftime('%d %B %Y')
+                watt_days_amended[new_key] = watt_days[timestamp]
+            context['watt_days'] = watt_days_amended
 
             watt_hours = solar_data['result']['watt_hours']
             watt_hours_amended = {}
@@ -34,7 +41,7 @@ class HomeView(FormView):
                 new_key = date.strftime('%I:%M%p %d %B %Y')
                 watt_hours_amended[new_key] = watt_hours[timestamp]
             context['watt_hours'] = watt_hours_amended
-
+            
             return self.render_to_response(context)
         else:
             return self.form_invalid(form)
